@@ -1,17 +1,6 @@
-/*
- * File : server.c
- * Author : Amine Amanzou
- *
- * Created : 4th January 2013
- *
- * Under GNU Licence
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-
-// Time function, sockets, htons... file stat
 #include <sys/time.h>
 #include <time.h>
 #include <sys/socket.h>
@@ -19,24 +8,18 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <sys/stat.h>
-
-// File function and bzero
 #include <fcntl.h>
 #include <unistd.h>
 #include <strings.h>
 
-/* Taille du buffer utilise pour envoyer le fichier
- * en plusieurs blocs
+/* Tamaño del búfer utilizado para enviar el archivo
+ * en varios bloques
  */
 #define BUFFERT 512
-/* Taille de la file d'attente des clients */
-#define BACKLOG 1
+// Tamaño de la cola de clientes
+#define BACKLOG 100
 
-/* Commande pou génerer un fichier de test
- * dd if=/dev/urandom of=fichier count=8
- */
-
-/* Declaration des fonctions*/
+/* Declaración de funciones */
 int duration(struct timeval *start, struct timeval *stop, struct timeval *delta);
 int create_server_socket(int port);
 void *socketHandler(void *lp);
@@ -52,13 +35,13 @@ int main(int argc, char **argv)
 
     if (argc != 2)
     {
-        perror("utilisation ./a.out <num_port> <file2send>\n");
+        perror("uso ./a.out <num_port> <file2send>\n");
         exit(3);
     }
 
     sfd = create_server_socket(atoi(argv[1]));
 
-    //Fonction qui attent la fonction connecte du client
+    // Función que llega a la función de conexión del cliente
     while (1)
     {
         listen(sfd, BACKLOG);
@@ -78,16 +61,11 @@ int main(int argc, char **argv)
             pthread_detach(thread_id);
         }
     }
-
-    // printf("Fin de la transmission avec %s.%d\n", dst, clt_port);
-    // printf("Nombre d'octets reçu : %ld \n", count);
-
-    // return EXIT_SUCCESS;
 }
 
-/* Fonction permettant la creation d'un socket et son attachement au systeme
- * Renvoie un descripteur de fichier dans la table de descripteur du processus
- * bind permet sa definition aupres du systeme
+/* Función que permite la creación de un socket y su conexión al sistema
+ * Devuelve un descriptor de archivo en la tabla de descriptores de proceso.
+ * bind permite su definición por parte del sistema
  */
 int create_server_socket(int port)
 {
@@ -101,11 +79,10 @@ int create_server_socket(int port)
         perror("socket fail");
         return EXIT_SUCCESS;
     }
-    /*SOL_SOCKET : To manipulate options at the sockets API level
-     *SO_REUSEADDR : Lorsqu'on doit redémarrer un serveur après un arrêt brutal cela peut servir
-     * à ne pas avoir une erreur lors de la création de la socket (la pile IP du système n'a pas
-     * toujours eu le temps de faire le ménage).
-     * Cas où plusieurs serveurs qui écoutent le même port ... (?)
+    /* SOL_SOCKET: Para manipular opciones en el nivel de API de sockets
+     * SO_REUSEADDR: Cuando tenga que reiniciar un servidor después de un apagado repentino, esto se puede utilizar
+     * no tener un error al crear el socket (la pila de IP del sistema no tenía siempre tuve tiempo para limpiar).
+     * Caso donde varios servidores escuchan el mismo puerto ... (?)
      */
     if (setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1)
     {
@@ -113,7 +90,7 @@ int create_server_socket(int port)
         exit(5);
     }
 
-    //preparation de l'adresse de la socket destination
+    // prepara la dirección del socket de destino
     l = sizeof(struct sockaddr_in);
     bzero(&sock_serv, l);
 
@@ -121,7 +98,7 @@ int create_server_socket(int port)
     sock_serv.sin_port = htons(port);
     sock_serv.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    //Affecter une identité au socket
+    // Asignar una identidad al socket
     if (bind(sfd, (struct sockaddr *)&sock_serv, l) == -1)
     {
         perror("bind fail");
@@ -146,16 +123,16 @@ void *socketHandler(void *lp)
         exit(4);
     }
     ushort clt_port = ntohs(sock_clt.sin_port);
-    printf("Debut de la connection pour : %s:%d\n", dst, clt_port);
+    printf("Inicio de conexión para: %s:%d\n", dst, clt_port);
 
-    //Traitement du nom du fichier avec la date
+    // Procesar el nombre del archivo con la fecha
     bzero(filename, 256);
     time_t intps = time(NULL);
     struct tm *tmi;
     tmi = localtime(&intps);
     bzero(filename, 256);
     sprintf(filename, "clt.%d.%d.%d.%d.%d.%d", tmi->tm_mday, tmi->tm_mon + 1, 1900 + tmi->tm_year, tmi->tm_hour, tmi->tm_min, tmi->tm_sec);
-    printf("Creating the copied output file : %s\n", filename);
+    printf("Creando el archivo de salida copiado: %s\n", filename);
 
     if ((fd = open(filename, O_CREAT | O_WRONLY, 0600)) == -1)
     {
@@ -181,6 +158,4 @@ void *socketHandler(void *lp)
         bzero(buffer, BUFFERT);
         n = recv(nsid, buffer, BUFFERT, 0);
     }
-    // close(sfd);
-    // close(fd);
 }

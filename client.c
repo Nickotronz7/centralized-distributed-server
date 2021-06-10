@@ -1,38 +1,17 @@
-/*
- * File : client.c
- * Author : Amine Amanzou
- *
- * Created : 4th January 2013
- *
- * Under GNU Licence
- */
-
 #include <stdio.h>
 #include <stdlib.h>
-
-// Time function, sockets, htons... file stat
 #include <sys/time.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <sys/stat.h>
-
-// File function and bzero
 #include <fcntl.h>
 #include <unistd.h>
 #include <strings.h>
 
-/* Taille du buffer utilise pour envoyer le fichier
- * en plusieurs blocs
- */
 #define BUFFERT 512
 
-/* Commande pou génerer un fichier de test
- * dd if=/dev/urandom of=fichier count=8
- */
-
-/* Declaration des fonctions*/
 int duration(struct timeval *start, struct timeval *stop, struct timeval *delta);
 int create_client_socket(int port, char *ipaddr);
 
@@ -43,7 +22,7 @@ int main(int argc, char **argv)
 	struct timeval start, stop, delta;
 	int sfd, fd;
 	char buf[BUFFERT];
-	off_t count = 0, m, sz; //long
+	off_t count = 0, m, sz;
 	long int n;
 	int l = sizeof(struct sockaddr_in);
 	struct stat buffer;
@@ -62,7 +41,6 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	//taille du fichier
 	if (stat(argv[3], &buffer) == -1)
 	{
 		perror("stat fail");
@@ -71,7 +49,6 @@ int main(int argc, char **argv)
 	else
 		sz = buffer.st_size;
 
-	//preparation de l'envoie
 	bzero(&buf, BUFFERT);
 
 	if (connect(sfd, (struct sockaddr *)&sock_serv, l) == -1)
@@ -95,26 +72,25 @@ int main(int argc, char **argv)
 			return EXIT_FAILURE;
 		}
 		count += m;
-		//fprintf(stdout,"----\n%s\n----\n",buf);
 		bzero(buf, BUFFERT);
 		n = read(fd, buf, BUFFERT);
 	}
-	//read vient de retourner 0 : fin de fichier
+	// lectura acaba de devolver 0: final del archivo
 
-	//pour debloquer le serv
+	// para desbloquear el serv
 	m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
 	gettimeofday(&stop, NULL);
 	duration(&start, &stop, &delta);
 
-	printf("Nombre d'octets transférés : %lld\n", count);
-	printf("Sur une taille total de : %lld \n", sz);
-	printf("Pour une durée total de : %ld.%d \n", delta.tv_sec, delta.tv_usec);
+	printf("Número de bytes transferidos: %ld\n", count);
+	printf("En un tamaño total: %ld \n", sz);
+	printf("Por una duración total de: %ld.%ld \n", delta.tv_sec, delta.tv_usec);
 
 	close(sfd);
 	return EXIT_SUCCESS;
 }
 
-/* Fonction permettant le calcul de la durée de l'envoie */
+// Función que permite calcular la duración del envío
 int duration(struct timeval *start, struct timeval *stop, struct timeval *delta)
 {
 	suseconds_t microstart, microstop, microdelta;
@@ -132,8 +108,9 @@ int duration(struct timeval *start, struct timeval *stop, struct timeval *delta)
 		return 0;
 }
 
-/* Fonction permettant la creation d'un socket
- * Renvoie un descripteur de fichier
+/*
+ * Función que permite la creación de un socket
+ * Devuelve un descriptor de archivo
  */
 int create_client_socket(int port, char *ipaddr)
 {
@@ -147,7 +124,7 @@ int create_client_socket(int port, char *ipaddr)
 		return EXIT_FAILURE;
 	}
 
-	//preparation de l'adresse de la socket destination
+	// prepara la dirección del socket de destino
 	l = sizeof(struct sockaddr_in);
 	bzero(&sock_serv, l);
 
