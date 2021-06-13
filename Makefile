@@ -10,3 +10,4 @@ client: client.c
 
 clean:
 	rm -f server client
+	rm -f ctl*
