@@ -10,13 +10,24 @@
 #include <unistd.h>
 #include <strings.h>
 #include <string.h>
+#include <time.h>
 
 #define BUFFERT 512
 
 int duration(struct timeval *start, struct timeval *stop, struct timeval *delta);
 int create_client_socket(int port, char *ipaddr);
+void *sendOP(void *v_arguments);
 
 struct sockaddr_in sock_serv;
+
+struct sendOP_args
+{
+	off_t m, count, sz;
+	int sfd, fd, l;
+	char key[BUFFERT], buf[BUFFERT];
+	long int n;
+	struct timeval start, stop, delta;
+};
 
 int main(int argc, char **argv)
 {
@@ -27,12 +38,15 @@ int main(int argc, char **argv)
 	char buf[BUFFERT];
 	off_t count = 0, m, sz;
 	long int n;
+	int times;
 	int l = sizeof(struct sockaddr_in);
 	struct stat buffer;
+	pthread_t thread_id = 0;
 
-	if (argc != 4)
+	if (argc < 5)
 	{
-		printf("Error usage : %s <ip_serv> <port_serv> <filename>\n", argv[0]);
+		//                         1           2         3          4       5
+		printf("Error usage : %s <ip_serv> <port_serv> <filename> <times> <xor_key>\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 
@@ -62,44 +76,43 @@ int main(int argc, char **argv)
 	gettimeofday(&start, NULL);
 	n = read(fd, buf, BUFFERT);
 
+	times = atoi(argv[4]);
 	char key[BUFFERT];
-	sprintf(key, "%d", rand() % 250);
+	if (argc > 5)
+	{
+		sprintf(key, "%d", atoi(argv[5]) % 250);
+	}
+	else
+	{
+		sprintf(key, "%d", rand() % 250);
+	}
 	strcat(key, ";");
 	strcat(key, argv[3]);
 	printf("La llave es %s", key);
 
-	m = sendto(sfd, key, n, 0, (struct sockaddr *)&sock_serv, l);
-
-	puts("\n");
-	while (n)
+	struct sendOP_args my_args;
+	my_args.m = m;
+	my_args.count = count;
+	my_args.sz = sz;
+	my_args.sfd = sfd;
+	my_args.fd = fd;
+	my_args.l = l;
+	strcpy(my_args.key, key);
+	strcpy(my_args.buf, buf);
+	my_args.n = n;
+	while (times > 0)
 	{
-		if (n == -1)
-		{
-			perror("read fails");
-			return EXIT_FAILURE;
-		}
-		m = sendto(sfd, buf, n, 0, (struct sockaddr *)&sock_serv, l);
-		if (m == -1)
-		{
-			perror("send error");
-			return EXIT_FAILURE;
-		}
-		count += m;
-		bzero(buf, BUFFERT);
-		n = read(fd, buf, BUFFERT);
+		my_args.start = start;
+		my_args.stop = stop;
+		my_args.delta = delta;
+		sendOP((void *)&my_args);
+		// pthread_create(&thread_id, 0, &sendOP, (void *)&my_args);
+		// pthread_detach(thread_id);
+
+		times -= 1;
 	}
-	// lectura acaba de devolver 0: final del archivo
-
-	// para desbloquear el serv
-	m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
-	gettimeofday(&stop, NULL);
-	duration(&start, &stop, &delta);
-
-	printf("Número de bytes transferidos: %ld\n", count);
-	printf("En un tamaño total: %ld \n", sz);
-	printf("Por una duración total de: %ld.%ld \n", delta.tv_sec, delta.tv_usec);
-
 	close(sfd);
+
 	return EXIT_SUCCESS;
 }
 
@@ -150,4 +163,58 @@ int create_client_socket(int port, char *ipaddr)
 	}
 
 	return sfd;
+}
+
+void *sendOP(void *v_arguments)
+{
+
+	struct sendOP_args *args = (struct sendOP_args *)v_arguments;
+
+	off_t m = args->m;
+	int sfd = args->sfd;
+	char key[BUFFERT], buf[BUFFERT];
+	strcpy(key, args->key);
+	long int n = args->n;
+	int l = args->l;
+	strcpy(buf, args->buf);
+	off_t count = args->count;
+	int fd = args->fd;
+	struct timeval start, stop, delta;
+	start = args->start;
+	stop = args->stop;
+	delta = args->delta;
+	off_t sz = args->sz;
+
+	m = sendto(sfd, key, n, 0, (struct sockaddr *)&sock_serv, l);
+
+	puts("\n");
+	while (n)
+	{
+		if (n == -1)
+		{
+			perror("read fails");
+			exit(-1);
+		}
+		m = sendto(sfd, buf, n, 0, (struct sockaddr *)&sock_serv, l);
+		if (m == -1)
+		{
+			perror("send error");
+			exit(-1);
+		}
+		count += m;
+		bzero(buf, BUFFERT);
+		n = read(fd, buf, BUFFERT);
+	}
+	// lectura acaba de devolver 0: final del archivo
+
+	// para desbloquear el serv
+	m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
+	gettimeofday(&stop, NULL);
+	duration(&start, &stop, &delta);
+
+	printf("Número de bytes transferidos: %ld\n", count);
+	printf("En un tamaño total: %ld \n", sz);
+	printf("Por una duración total de: %ld.%ld \n", delta.tv_sec, delta.tv_usec);
+
+	// close(sfd);
 }
