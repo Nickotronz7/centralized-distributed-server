@@ -6,6 +6,8 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
 
+
+
 int filtrxor(char* name,int xor) {
      int width, height, channels;
      unsigned char *img = stbi_load(name, &width, &height, &channels, 0);
