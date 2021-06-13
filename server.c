@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <strings.h>
+#include <string.h>
 
 /* Tamaño del búfer utilizado para enviar el archivo
  * en varios bloques
@@ -35,7 +36,7 @@ int main(int argc, char **argv)
 
     if (argc != 2)
     {
-        perror("uso ./a.out <num_port> <file2send>\n");
+        perror("uso ./server.out <num_port> \n");
         exit(3);
     }
 
@@ -54,7 +55,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            printf("---------------------\nConexion recivida de  %s\n", inet_ntoa(sock_clt.sin_addr));
+            printf("---------------------\nConexion recibida de  %s\n", inet_ntoa(sock_clt.sin_addr));
             unsigned int *nsid_p;
             *nsid_p = nsid;
             pthread_create(&thread_id, 0, &socketHandler, (void *)nsid_p);
@@ -111,8 +112,8 @@ int create_server_socket(int port)
 void *socketHandler(void *lp)
 {
     unsigned int nsid = *(unsigned int *)lp;
-    char filename[256], dst[INET_ADDRSTRLEN], buffer[BUFFERT];
-    int fd;
+    char filename[256], dst[INET_ADDRSTRLEN], buffer[BUFFERT], headers[BUFFERT];
+    int fd, fd2;
     long int n, m, count = 0;
 
     bzero(buffer, BUFFERT);
@@ -122,7 +123,7 @@ void *socketHandler(void *lp)
         perror("erreur socket");
         exit(4);
     }
-    ushort clt_port = ntohs(sock_clt.sin_port);
+    int clt_port = ntohs(sock_clt.sin_port);
     printf("Inicio de conexión para: %s:%d\n", dst, clt_port);
 
     // Procesar el nombre del archivo con la fecha
@@ -134,14 +135,16 @@ void *socketHandler(void *lp)
     sprintf(filename, "clt.%d.%d.%d.%d.%d.%d", tmi->tm_mday, tmi->tm_mon + 1, 1900 + tmi->tm_year, tmi->tm_hour, tmi->tm_min, tmi->tm_sec);
     printf("Creando el archivo de salida copiado: %s\n", filename);
 
-    if ((fd = open(filename, O_CREAT | O_WRONLY, 0600)) == -1)
-    {
-        perror("open fail");
-        exit(3);
-    }
     bzero(buffer, BUFFERT);
+    void *file_mem = malloc(BUFFERT);
 
+    n = recv(nsid, headers, BUFFERT, 0);
+
+    bzero(buffer, BUFFERT);
     n = recv(nsid, buffer, BUFFERT, 0);
+
+    printf("Recived %ld bytes of data", n);
+    puts("\n");
     while (n)
     {
         if (n == -1)
@@ -149,13 +152,38 @@ void *socketHandler(void *lp)
             perror("recv fail");
             exit(5);
         }
-        if ((m = write(fd, buffer, n)) == -1)
-        {
-            perror("write fail");
-            exit(6);
-        }
-        count = count + m;
+        memcpy(file_mem + count, buffer, BUFFERT);
+
+        count = count + n;
         bzero(buffer, BUFFERT);
         n = recv(nsid, buffer, BUFFERT, 0);
+        if (n)
+        {
+            void *new_mem_file = realloc(file_mem, count + BUFFERT);
+            file_mem = new_mem_file;
+        }
+        printf("Recived %ld bytes of data", n);
+        puts("\n");
     }
+    printf("Total %ld bytes of data \n", count);
+    printf("wrote data %ld times\n", count / 512);
+    printf("El valor que entró es %s", headers);
+    puts("\n");
+    char *key = strtok(headers, ";");
+    char *name = strtok(NULL, ";");
+    char new_name[128] = "new_";
+    strcat(new_name, name);
+
+    if ((fd2 = open(new_name, O_CREAT | O_WRONLY, 0600)) == -1)
+    {
+        perror("open fail");
+        exit(3);
+    }
+    if ((m = write(fd2, file_mem, count)) == -1)
+    {
+        perror("write fail");
+        exit(6);
+    }
+
+    return 0;
 }
