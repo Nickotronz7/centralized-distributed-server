@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <strings.h>
+#include <string.h>
 
 #define BUFFERT 512
 
@@ -19,6 +20,8 @@ struct sockaddr_in sock_serv;
 
 int main(int argc, char **argv)
 {
+	time_t t;
+	srand((unsigned)time(&t));
 	struct timeval start, stop, delta;
 	int sfd, fd;
 	char buf[BUFFERT];
@@ -58,6 +61,16 @@ int main(int argc, char **argv)
 	}
 	gettimeofday(&start, NULL);
 	n = read(fd, buf, BUFFERT);
+
+	char key[BUFFERT];
+	sprintf(key, "%d", rand() % 250);
+	strcat(key, ";");
+	strcat(key, argv[3]);
+	printf("La llave es %s", key);
+
+	m = sendto(sfd, key, n, 0, (struct sockaddr *)&sock_serv, l);
+
+	puts("\n");
 	while (n)
 	{
 		if (n == -1)
