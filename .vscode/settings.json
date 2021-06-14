@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.ajson": "json",
+        "*.fasta": "fasta-hc",
+        "typeinfo": "c",
+        "fcntl.h": "c"
+    }
+}

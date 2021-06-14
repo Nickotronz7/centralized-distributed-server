@@ -12,24 +12,17 @@
 #include <unistd.h>
 #include <strings.h>
 #include <string.h>
+#include "client.c"
 
 /* Tamaño del búfer utilizado para enviar el archivo
  * en varios bloques
  */
-#define BUFFERT 512 // Tamaño de la cola de clientes
 #define BACKLOG 100
 #define QUEUE_SIZE 100
-#define MAX_NAME_LENGTH 256
+#define MAX_NODES 5
 
 ////////////////////////////////////////////////////////////////
 ///////////////////////STRUCTS/////////////////////////////////
-
-struct image
-{
-    char name[MAX_NAME_LENGTH];
-    int key;
-    void *image_mem;
-} image;
 
 struct socketParameters
 {
@@ -52,13 +45,14 @@ int duration(struct timeval *start, struct timeval *stop, struct timeval *delta)
 int create_server_socket(int port, struct sockaddr_in *sock_serv);
 void *readImageFromSocket(void *lp);
 void *listen_to_port(void *params);
-void to_file(int count, void *headers, void *file_mem);
+void processImageInNode(int count, void *headers, void *file_mem);
 void *readMessagesFromSocket(void *params);
 
 ////////////////////////////////////////////////////////////////
 //////////////////////////GLOBALS////////////////////////////////
 
 struct image images[QUEUE_SIZE];
+struct node nodes[MAX_NODES];
 pthread_mutex_t lock;
 int images_head;
 int images_tail;
@@ -115,7 +109,31 @@ void *readMessagesFromSocket(void *params)
     char *ip = strtok(NULL, ";");
     char *port = strtok(NULL, ";");
     char *message = strtok(NULL, ";");
-    printf("Raw info is  %s \n", headers);
+    if (strcmp(message, "join") == 0)
+    {
+        for (int i = 0; i < MAX_NODES; i++)
+        {
+            if (nodes[i].id == 0)
+            {
+                nodes[i].id = atoi(id);
+                strcpy(nodes[i].ipaddr, ip);
+                nodes[i].port = atoi(port);
+                break;
+            }
+        }
+    }
+    if (strcmp(message, "free") == 0)
+    {
+        for (int i = 0; i < MAX_NODES; i++)
+        {
+            if (nodes[i].id == atoi(id))
+            {
+                nodes[i].working_in--;
+
+                break;
+            }
+        }
+    }
     printf("El id es %s la ip es %s, en el puerto %s, le mensaje %s", id, ip, port, message);
 
     puts("\n");
@@ -143,7 +161,7 @@ void *listen_to_port(void *params)
         }
         else
         {
-            puts("Else\n");
+            puts("listening\n");
             printf("---------------------\nConexion recibida de  %s\n", inet_ntoa(sock_clt.sin_addr));
             struct functionParameters function_parameters;
             function_parameters.nsid_p = nsid;
@@ -229,8 +247,8 @@ void *readImageFromSocket(void *params)
     bzero(buffer, BUFFERT);
     n = recv(nsid, buffer, BUFFERT, 0);
 
-    printf("Recived %ld bytes of data", n);
-    puts("\n");
+    // printf("Recived %ld bytes of data", n);
+    //puts("\n");
     while (n)
     {
         if (n == -1)
@@ -248,27 +266,30 @@ void *readImageFromSocket(void *params)
             void *new_mem_file = realloc(file_mem, count + BUFFERT);
             file_mem = new_mem_file;
         }
-        printf("Recived %ld bytes of data", n);
-        puts("\n");
+        //  printf("Recived %ld bytes of data", n);
+        //  puts("\n");
     }
     printf("Total %ld bytes of data \n", count);
-    printf("wrote data %ld times\n", count / 512);
+    printf("wrote data %ld times\n", count / BUFFERT);
     printf("El valor que entró es %s", headers);
     puts("\n");
-    to_file(count, headers, file_mem);
+    pthread_mutex_lock(&lock);
+    processImageInNode(count, headers, file_mem);
+    pthread_mutex_unlock(&lock);
 
     return file_mem;
 }
-void to_file(int count, void *headers, void *file_mem)
+void processImageInNode(int count, void *headers, void *file_mem)
 {
+
     int fd, m;
     char *key = strtok(headers, ";");
     char *name = strtok(NULL, ";");
 
-    char random_number[5];
-    sprintf(random_number, "%d", 1000 + (rand() % 9000));
+    char random_number[6];
+    sprintf(random_number, "%d", 10000 + (rand() % 90000));
 
-    char new_name[MAX_NAME_LENGTH] = "new_"; //Agregar un random al nombre
+    char new_name[MAX_NAME_LENGTH] = ""; //Agregar un random al nombre
     strcat(new_name, random_number);
 
     strcat(new_name, name);
@@ -285,15 +306,46 @@ void to_file(int count, void *headers, void *file_mem)
         exit(6);
     }
 
-    pthread_mutex_lock(&lock);
-    strcpy(images[images_head].name, name);
+    strcpy(images[images_head].name, new_name);
     images[images_head].key = atoi(key);
     images[images_head].image_mem = file_mem;
-    images_head++;
+    images[images_head].size = m;
 
-    if (images_head >= QUEUE_SIZE)
+    int node_index = rand() % MAX_NODES;
+
+    // esto es busy waiting hay que quitar esta mierda salu3
+    while (1)
     {
-        images_head = 0;
+
+        if (nodes[node_index].id != 0 && nodes[node_index].working_in < 3)
+        {
+            break;
+        }
+        printf("Searching node... \n");
+        puts("\n");
+        node_index = rand() % MAX_NODES;
     }
-    pthread_mutex_unlock(&lock);
+    printf("nodo %d", node_index);
+    puts("\n");
+    int next_head = images_head + 1;
+
+    if (next_head >= QUEUE_SIZE)
+    {
+        next_head = 0;
+    }
+
+    if (next_head == images_tail)
+    {
+        printf("La cola está llena imagen rechazada");
+        free(images[images_head].image_mem);
+    }
+    else
+    {
+        struct image *new_image = &images[images_head];
+        sendToNode(&nodes[node_index], &images[images_head]);
+        /// Hacer los calculos del tail pls
+
+        free(images[images_head].image_mem);
+        images_head = next_head;
+    }
 }

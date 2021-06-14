@@ -11,124 +11,70 @@
 #include <strings.h>
 #include <string.h>
 #include <time.h>
+#include <pthread.h>
+#include "server.h"
 
-#define BUFFERT 512
-
-int duration(struct timeval *start, struct timeval *stop, struct timeval *delta);
-int create_client_socket(int port, char *ipaddr);
-void *sendOP(void *v_arguments);
-
-struct sockaddr_in sock_serv;
-
-struct sendOP_args
+int sendToNode(struct node *new_node, struct image *new_image)
 {
-	off_t m, count, sz;
-	int sfd, fd, l;
-	char key[BUFFERT], buf[BUFFERT];
-	long int n;
-	struct timeval start, stop, delta;
-};
 
-int main(int argc, char **argv)
-{
 	time_t t;
 	srand((unsigned)time(&t));
 	struct timeval start, stop, delta;
 	int sfd, fd;
 	char buf[BUFFERT];
 	off_t count = 0, m, sz;
-	long int n;
-	int times;
+
 	int l = sizeof(struct sockaddr_in);
 	struct stat buffer;
 	pthread_t thread_id = 0;
 
-	if (argc < 5)
+	sfd = create_client_socket(new_node->port, new_node->ipaddr);
+	new_node->working_in++;
+	bzero(&buf, BUFFERT);
+
+	if (connect(sfd, (struct sockaddr *)&sock_serv, l) == -1)
 	{
-		//                         1           2         3          4       5
-		printf("Error usage : %s <ip_serv> <port_serv> <filename> <times> <xor_key>\n", argv[0]);
-		return EXIT_FAILURE;
+		perror("conexion error\n");
+		exit(3);
 	}
-	times = atoi(argv[4]);
+	char key[BUFFERT];
+	sprintf(key, "%d", new_image->key);
+	strcat(key, ";");
+	strcat(key, new_image->name);
+	m = sendto(sfd, key, BUFFERT, 0, (struct sockaddr *)&sock_serv, l);
+	int remainingBytes = new_image->size;
+	int bytesToRead = BUFFERT;
 
-	while (times > 0)
+	while (1)
 	{
-
-		sfd = create_client_socket(atoi(argv[2]), argv[1]);
-
-		if ((fd = open(argv[3], O_RDONLY)) == -1)
+		bytesToRead = BUFFERT;
+		if (remainingBytes < bytesToRead)
 		{
-			perror("open fail");
-			return EXIT_FAILURE;
+			bytesToRead = remainingBytes;
+			memcpy(buf, new_image->image_mem + count, bytesToRead);
+			m = sendto(sfd, buf, bytesToRead, 0, (struct sockaddr *)&sock_serv, l);
+
+			break;
 		}
-
-		if (stat(argv[3], &buffer) == -1)
-		{
-			perror("stat fail");
-			return EXIT_FAILURE;
-		}
-		else
-			sz = buffer.st_size;
-
-		bzero(&buf, BUFFERT);
-
-		if (connect(sfd, (struct sockaddr *)&sock_serv, l) == -1)
-		{
-			perror("conexion error\n");
-			exit(3);
-		}
-		gettimeofday(&start, NULL);
-		n = read(fd, buf, BUFFERT);
-
-		char key[BUFFERT];
-		if (argc > 5)
-		{
-			sprintf(key, "%d", atoi(argv[5]) % 250);
-		}
-		else
-		{
-			sprintf(key, "%d", rand() % 250);
-		}
-		strcat(key, ";");
-		strcat(key, argv[3]);
-		printf("La llave es %s", key);
-
-		m = sendto(sfd, key, n, 0, (struct sockaddr *)&sock_serv, l);
-
-		puts("\n");
-		while (n)
-		{
-			if (n == -1)
-			{
-				perror("read fails");
-				return EXIT_FAILURE;
-			}
-			m = sendto(sfd, buf, n, 0, (struct sockaddr *)&sock_serv, l);
-			// sleep(0.25);
-			if (m == -1)
-			{
-				perror("send error");
-				return EXIT_FAILURE;
-			}
-			count += m;
-			bzero(buf, BUFFERT);
-			n = read(fd, buf, BUFFERT);
-		}
-		// lectura acaba de devolver 0: final del archivo
-
-		// para desbloquear el serv
-		m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
-		gettimeofday(&stop, NULL);
-		duration(&start, &stop, &delta);
-
-		printf("Número de bytes transferidos: %ld\n", count);
-		printf("En un tamaño total: %ld \n", sz);
-		printf("Por una duración total de: %ld.%ld \n", delta.tv_sec, delta.tv_usec);
-
-		close(sfd);
-		times -= 1;
+		memcpy(buf, new_image->image_mem + count, bytesToRead);
+		m = sendto(sfd, buf, bytesToRead, 0, (struct sockaddr *)&sock_serv, l);
+		count = count + m;
+		remainingBytes = remainingBytes - m;
+		bzero(buf, BUFFERT);
 	}
-	return EXIT_SUCCESS;
+
+	// lectura acaba de devolver 0: final del archivo
+
+	// para desbloquear el serv
+	m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
+	gettimeofday(&stop, NULL);
+	duration(&start, &stop, &delta);
+	/*
+	printf("Número de bytes transferidos: %ld\n", count);
+	printf("En un tamaño total: %ld \n", sz);
+	printf("Por una duración total de: %ld.%ld \n", delta.tv_sec, delta.tv_usec);
+*/
+	close(sfd);
 }
 
 // Función que permite calcular la duración del envío
@@ -226,10 +172,4 @@ void *sendOP(void *v_arguments)
 	m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
 	gettimeofday(&stop, NULL);
 	duration(&start, &stop, &delta);
-
-	printf("Número de bytes transferidos: %ld\n", count);
-	printf("En un tamaño total: %ld \n", sz);
-	printf("Por una duración total de: %ld.%ld \n", delta.tv_sec, delta.tv_usec);
-
-	// close(sfd);
 }

@@ -1,13 +1,8 @@
 all:
 	make server
-	make client
 
 server: server.c
-	gcc -o server server.c -lpthread
-
-client: client.c
-	gcc -o client client.c
+	gcc -o server  server.c -lpthread
 
 clean:
-	rm -f server client
-	rm -f ctl*
+	rm -f server 
