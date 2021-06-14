@@ -46,10 +46,13 @@ int main(int argc, char **argv)
 	if (argc < 5)
 	{
 		//                         1           2         3          4       5
-		printf("Error usage : %s <ip_serv> <port_serv> <filename> <times> <xor_key>\n", argv[0]);
+		printf("Error usage : %s <ip_serv> <port_serv> <filename> <times> <xor_key>\n",
+			   argv[0]);
 		return EXIT_FAILURE;
 	}
 	times = atoi(argv[4]);
+
+	// printf("")
 
 	while (times > 0)
 	{
@@ -104,7 +107,6 @@ int main(int argc, char **argv)
 				return EXIT_FAILURE;
 			}
 			m = sendto(sfd, buf, n, 0, (struct sockaddr *)&sock_serv, l);
-			// sleep(0.25);
 			if (m == -1)
 			{
 				perror("send error");
@@ -123,10 +125,12 @@ int main(int argc, char **argv)
 
 		printf("Número de bytes transferidos: %ld\n", count);
 		printf("En un tamaño total: %ld \n", sz);
-		printf("Por una duración total de: %ld.%ld \n", delta.tv_sec, delta.tv_usec);
+		printf("Por una duración total de: %ld.%ld \n", delta.tv_sec,
+			   delta.tv_usec);
 
 		close(sfd);
 		times -= 1;
+		sleep(1);
 	}
 	return EXIT_SUCCESS;
 }
