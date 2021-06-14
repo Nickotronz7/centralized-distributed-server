@@ -40,6 +40,8 @@ int main(int argc, char **argv)
     int sfd, fd;
     unsigned int length = sizeof(struct sockaddr_in);
     unsigned int nsid;
+    time_t t;
+    srand((unsigned)time(&t));
     pthread_t thread_id = 0;
     
     if (argc != 4)
@@ -146,7 +148,7 @@ void *socketHandler(void *lp)
 
     bzero(buffer, BUFFERT);
     n = recv(nsid, buffer, BUFFERT, 0);
-
+    
     printf("Recived %ld bytes of data", n);
     puts("\n");
     while (n)
@@ -170,7 +172,7 @@ void *socketHandler(void *lp)
         puts("\n");
     }
     printf("Total %ld bytes of data \n", count);
-    printf("wrote data %ld times\n", count / 512);
+    printf("wrote data %ld times\n", count / BUFFERT);
     printf("El valor que entró es %s", headers);
     puts("\n");
     char *key = strtok(headers, ";");
