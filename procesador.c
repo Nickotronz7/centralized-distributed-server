@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     
     if (argc != 4)
     {
-        perror("uso ./server.out <num_port> <ip_server> <ip_self>\n");
+        perror("uso ./procesador.out <num_port> <ip_server> <ip_self>\n");
         exit(3);
     }
 
