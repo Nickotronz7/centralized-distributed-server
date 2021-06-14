@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <strings.h>
 #include <string.h>
+#include "client.c"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
@@ -29,6 +30,8 @@
 int duration(struct timeval *start, struct timeval *stop, struct timeval *delta);
 int create_server_socket(int port);
 void *socketHandler(void *lp);
+char ipserver[20],ipself[20],port[20],id[20];
+char key[BUFFERT];
 
 struct sockaddr_in sock_serv, sock_clt;
 
@@ -38,15 +41,19 @@ int main(int argc, char **argv)
     unsigned int length = sizeof(struct sockaddr_in);
     unsigned int nsid;
     pthread_t thread_id = 0;
-
-    if (argc != 2)
+    
+    if (argc != 4)
     {
-        perror("uso ./server.out <num_port> \n");
+        perror("uso ./server.out <num_port> <ip_server> <ip_self>\n");
         exit(3);
     }
 
     sfd = create_server_socket(atoi(argv[1]));
-
+    strcpy(ipserver,argv[2]);
+    strcpy(port, argv[1]); 
+    strcpy(ipself,argv[3]);
+    sprintf(id, "%d", rand() % 1000000);
+    comunicate(ipserver,port,ipself,"join",id);
     // Función que llega a la función de conexión del cliente
     while (1)
     {
@@ -120,6 +127,7 @@ void *socketHandler(void *lp)
     char dst[INET_ADDRSTRLEN], buffer[BUFFERT], headers[BUFFERT];
     int fd, fd2;
     long int n, m, count = 0;
+    pthread_t thread_id = 0;
 
     bzero(buffer, BUFFERT);
 
@@ -167,7 +175,7 @@ void *socketHandler(void *lp)
     puts("\n");
     char *key = strtok(headers, ";");
     char *name = strtok(NULL, ";");
-    char new_name[128] = "new_";
+    char new_name[128] = "";
     strcat(new_name, name);
 
     if ((fd2 = open(new_name, O_CREAT | O_WRONLY, 0600)) == -1)
@@ -186,6 +194,10 @@ void *socketHandler(void *lp)
 }
 
 int filtrxor(char* name,int xor) {
+    
+    char new_name[128] = "xor_";
+    strcat(new_name, name);
+    puts(name);
      int width, height, channels;
      unsigned char *img = stbi_load(name, &width, &height, &channels, 0);
      if(img == NULL) {
@@ -210,5 +222,7 @@ int filtrxor(char* name,int xor) {
      }
      sleep(1);
         
-     stbi_write_jpg("sky_sepia.jpg", width, height, channels, sepia_img, 100);     
+     stbi_write_jpg(new_name, width, height, channels, sepia_img, 100);  
+     comunicate(ipserver,port,ipself,"free",id);
+
 }
