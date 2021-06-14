@@ -49,70 +49,85 @@ int main(int argc, char **argv)
 		printf("Error usage : %s <ip_serv> <port_serv> <filename> <times> <xor_key>\n", argv[0]);
 		return EXIT_FAILURE;
 	}
-
-	sfd = create_client_socket(atoi(argv[2]), argv[1]);
-
-	if ((fd = open(argv[3], O_RDONLY)) == -1)
-	{
-		perror("open fail");
-		return EXIT_FAILURE;
-	}
-
-	if (stat(argv[3], &buffer) == -1)
-	{
-		perror("stat fail");
-		return EXIT_FAILURE;
-	}
-	else
-		sz = buffer.st_size;
-
-	bzero(&buf, BUFFERT);
-
-	if (connect(sfd, (struct sockaddr *)&sock_serv, l) == -1)
-	{
-		perror("conexion error\n");
-		exit(3);
-	}
-	gettimeofday(&start, NULL);
-	n = read(fd, buf, BUFFERT);
-
 	times = atoi(argv[4]);
-	char key[BUFFERT];
-	if (argc > 5)
-	{
-		sprintf(key, "%d", atoi(argv[5]) % 250);
-	}
-	else
-	{
-		sprintf(key, "%d", rand() % 250);
-	}
-	strcat(key, ";");
-	strcat(key, argv[3]);
-	printf("La llave es %s", key);
 
-	struct sendOP_args my_args;
-	my_args.m = m;
-	my_args.count = count;
-	my_args.sz = sz;
-	my_args.sfd = sfd;
-	my_args.fd = fd;
-	my_args.l = l;
-	strcpy(my_args.key, key);
-	strcpy(my_args.buf, buf);
-	my_args.n = n;
 	while (times > 0)
 	{
-		my_args.start = start;
-		my_args.stop = stop;
-		my_args.delta = delta;
-		sendOP((void *)&my_args);
-		// pthread_create(&thread_id, 0, &sendOP, (void *)&my_args);
-		// pthread_detach(thread_id);
 
+		sfd = create_client_socket(atoi(argv[2]), argv[1]);
+
+		if ((fd = open(argv[3], O_RDONLY)) == -1)
+		{
+			perror("open fail");
+			return EXIT_FAILURE;
+		}
+
+		if (stat(argv[3], &buffer) == -1)
+		{
+			perror("stat fail");
+			return EXIT_FAILURE;
+		}
+		else
+			sz = buffer.st_size;
+
+		bzero(&buf, BUFFERT);
+
+		if (connect(sfd, (struct sockaddr *)&sock_serv, l) == -1)
+		{
+			perror("conexion error\n");
+			exit(3);
+		}
+		gettimeofday(&start, NULL);
+		n = read(fd, buf, BUFFERT);
+
+		char key[BUFFERT];
+		if (argc > 5)
+		{
+			sprintf(key, "%d", atoi(argv[5]) % 250);
+		}
+		else
+		{
+			sprintf(key, "%d", rand() % 250);
+		}
+		strcat(key, ";");
+		strcat(key, argv[3]);
+		printf("La llave es %s", key);
+
+		m = sendto(sfd, key, n, 0, (struct sockaddr *)&sock_serv, l);
+
+		puts("\n");
+		while (n)
+		{
+			if (n == -1)
+			{
+				perror("read fails");
+				return EXIT_FAILURE;
+			}
+			m = sendto(sfd, buf, n, 0, (struct sockaddr *)&sock_serv, l);
+			// sleep(0.25);
+			if (m == -1)
+			{
+				perror("send error");
+				return EXIT_FAILURE;
+			}
+			count += m;
+			bzero(buf, BUFFERT);
+			n = read(fd, buf, BUFFERT);
+		}
+		// lectura acaba de devolver 0: final del archivo
+
+		// para desbloquear el serv
+		m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
+		gettimeofday(&stop, NULL);
+		duration(&start, &stop, &delta);
+
+		printf("Número de bytes transferidos: %ld\n", count);
+		printf("En un tamaño total: %ld \n", sz);
+		printf("Por una duración total de: %ld.%ld \n", delta.tv_sec, delta.tv_usec);
+
+		close(sfd);
 		times -= 1;
 	}
-	close(sfd);
-
 	return EXIT_SUCCESS;
 }
 
