@@ -220,7 +220,7 @@ int filtrxor(char* name,int xor) {
              *(pg + 3) = *(p + 3);
          }
      }
-     sleep(1);
+     sleep(4);
         
      stbi_write_jpg(new_name, width, height, channels, sepia_img, 100);  
      comunicate(ipserver,port,ipself,"free",id);
