@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	struct timeval start, stop, delta;
 	int sfd, fd;
 	char buf[BUFFERT];
-	off_t count = 0, m, sz;
+	off_t count, m, sz;
 	long int n;
 	int times;
 	int l = sizeof(struct sockaddr_in);
@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 	{
 
 		sfd = create_client_socket(atoi(argv[2]), argv[1]);
+		count = 0;
 
 		if ((fd = open(argv[3], O_RDONLY)) == -1)
 		{
