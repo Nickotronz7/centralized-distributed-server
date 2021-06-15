@@ -1,67 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <sys/time.h>
-#include <time.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <strings.h>
-#include <string.h>
+
 #include "client.c"
 #include "logger.c"
-
-/* Tamaño del búfer utilizado para enviar el archivo
- * en varios bloques
- */
-#define BACKLOG 100
-#define QUEUE_SIZE 100
-#define MAX_NODES 5
-
-////////////////////////////////////////////////////////////////
-///////////////////////STRUCTS/////////////////////////////////
-
-struct socketParameters
-{
-    void *handler_function;
-    int port;
-
-} socket_parameters;
-
-struct functionParameters
-{
-    unsigned int nsid_p;
-    struct sockaddr_in *sock_clt;
-} functionParameters;
-
-////////////////////////////////////////////////////////////////
-///////////////////////FUNCTIONS/////////////////////////////////
-/* Declaración de funciones */
-
-int duration(struct timeval *start, struct timeval *stop, struct timeval *delta);
-int create_server_socket(int port, struct sockaddr_in *sock_serv);
-void *readImageFromSocket(void *lp);
-void *listen_to_port(void *params);
-void processImageInNode(int count, void *headers, void *file_mem);
-void *readMessagesFromSocket(void *params);
-
-////////////////////////////////////////////////////////////////
-//////////////////////////GLOBALS////////////////////////////////
-
-struct image images[QUEUE_SIZE];
-struct node nodes[MAX_NODES];
-pthread_mutex_t lock;
-int images_head;
-int images_tail;
 
 //////////////////////////////////////////////////////////////////
 
 int main(int argc, char **argv)
 {
+    FILE *log_file = fopen(LOG_FILE, "w");
+    fclose(log_file);
+
     time_t t;
     pthread_t thread_1, thread_2 = 0;
 
@@ -74,7 +21,7 @@ int main(int argc, char **argv)
     }
 
     struct socketParameters socket_parameters;
-    socket_parameters.port = 2222;
+    socket_parameters.port = atoi(argv[1]);
     socket_parameters.handler_function = readImageFromSocket;
     struct socketParameters socket_parameters2;
     socket_parameters2.port = 2223;
@@ -117,6 +64,7 @@ void *readMessagesFromSocket(void *params)
             if (nodes[i].id == 0)
             {
                 nodes[i].id = atoi(id);
+                sem_init(&nodes[i].semaphore, 0, 3);
                 strcpy(nodes[i].ipaddr, ip);
                 nodes[i].port = atoi(port);
                 break;
@@ -129,7 +77,8 @@ void *readMessagesFromSocket(void *params)
         {
             if (nodes[i].id == atoi(id))
             {
-                nodes[i].working_in--;
+                log_event("INFO", "Se liberó un espacio en el nodo %d", nodes[i].id);
+                sem_post(&nodes[i].semaphore);
 
                 break;
             }
@@ -266,12 +215,10 @@ void *readImageFromSocket(void *params)
         //  printf("Recived %ld bytes of data", n);
         //  puts("\n");
     }
-    log_event(NULL, "Total %ld bytes of data \n", count);
-    log_event(NULL, "wrote data %ld times\n", count / BUFFERT);
-    log_event(NULL, "El valor que entró es %s", headers);
-    pthread_mutex_lock(&lock);
+    //  log_event(NULL, "Total %ld bytes of data \n", count);
+    // log_event(NULL, "wrote data %ld times\n", count / BUFFERT);
+    // log_event(NULL, "El valor que entró es %s", headers);
     processImageInNode(count, headers, file_mem);
-    pthread_mutex_unlock(&lock);
 
     return file_mem;
 }
@@ -312,14 +259,18 @@ void processImageInNode(int count, void *headers, void *file_mem)
     // esto es busy waiting hay que quitar esta mierda salu3
     while (1)
     {
-
-        if (nodes[node_index].id != 0 && nodes[node_index].working_in < 3)
+        if (nodes[node_index].id != 0)
         {
             break;
         }
-
         node_index = rand() % MAX_NODES;
     }
+    pthread_t wait_thread;
+
+    pthread_create(&wait_thread, 0, &waiting, &nodes[node_index].id);
+    sem_wait(&nodes[node_index].semaphore);
+    pthread_cancel(wait_thread);
+
     log_event(NULL, "Se ha asignado el nodo %d a la imagen %s", nodes[node_index].id, images[images_head].name);
     int next_head = images_head + 1;
 
@@ -341,5 +292,17 @@ void processImageInNode(int count, void *headers, void *file_mem)
 
         free(images[images_head].image_mem);
         images_head = next_head;
+    }
+}
+
+void *waiting(void *node_index)
+{
+    int node = *(int *)node_index;
+    sleep(1);
+    while (1)
+    {
+        printf("Esperando por el nodo %d", node);
+        puts("\n");
+        sleep(1);
     }
 }

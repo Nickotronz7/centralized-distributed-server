@@ -10,5 +10,8 @@
         "stdio.h": "c",
         "logger.h": "c",
         "system_error": "c"
+    },
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
     }
 }

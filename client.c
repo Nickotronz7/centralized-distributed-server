@@ -22,7 +22,7 @@ int sendToNode(struct node *new_node, struct image *new_image)
 	struct timeval start, stop, delta;
 	int sfd, fd;
 	char buf[BUFFERT];
-	off_t count = 0, m, sz;
+	off_t count = 0, m;
 
 	int l = sizeof(struct sockaddr_in);
 	struct stat buffer;

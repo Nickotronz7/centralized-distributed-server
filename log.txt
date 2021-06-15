@@ -1,18 +1,60 @@
-Mon Jun 14 18:00:43 2021
+Tue Jun 15 02:25:10 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Mon Jun 14 18:00:54 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:40608
+Tue Jun 15 02:25:10 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:47928
 
-Mon Jun 14 18:00:54 2021
+Tue Jun 15 02:25:11 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Mon Jun 14 18:00:59 2021
- [INFO]: Mensaje recibido de 491864491864 desde la IP 127.0.0.1 utilizando el puerto 6491: join 
+Tue Jun 15 02:25:11 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:47936
 
-Mon Jun 14 18:00:59 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:40608
+Tue Jun 15 02:25:12 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Mon Jun 14 18:00:59 2021
- [INFO]: Mensaje recibido de 853279853279 desde la IP 127.0.0.1 utilizando el puerto 6491: join 
+Tue Jun 15 02:25:12 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:47940
+
+Tue Jun 15 02:25:13 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 02:25:13 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:47942
+
+Tue Jun 15 02:25:14 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 02:25:14 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:47950
+
+Tue Jun 15 02:25:15 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 02:25:15 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:47962
+
+Tue Jun 15 02:25:16 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 02:25:16 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:47968
+
+Tue Jun 15 02:25:17 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 02:25:17 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:47970
+
+Tue Jun 15 02:25:18 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 02:25:18 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:47972
+
+Tue Jun 15 02:25:19 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 02:25:19 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:47974
 
