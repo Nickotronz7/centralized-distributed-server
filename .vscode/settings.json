@@ -3,6 +3,12 @@
         "*.ajson": "json",
         "*.fasta": "fasta-hc",
         "typeinfo": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "*.tcc": "c",
+        "cmath": "c",
+        "complex": "c",
+        "stdio.h": "c",
+        "logger.h": "c",
+        "system_error": "c"
     }
 }

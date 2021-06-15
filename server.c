@@ -13,6 +13,7 @@
 #include <strings.h>
 #include <string.h>
 #include "client.c"
+#include "logger.c"
 
 /* Tamaño del búfer utilizado para enviar el archivo
  * en varios bloques
@@ -100,7 +101,7 @@ void *readMessagesFromSocket(void *params)
         exit(4);
     }
 
-    printf("Inicio de conexión para: %s:%d\n", dst, clt_port);
+    log_event(NULL, "Inicio de conexión para: %s:%d\n", dst, clt_port);
 
     bzero(headers, BUFFERT);
     recv(nsid, headers, BUFFERT, 0);
@@ -134,9 +135,8 @@ void *readMessagesFromSocket(void *params)
             }
         }
     }
-    printf("El id es %s la ip es %s, en el puerto %s, le mensaje %s", id, ip, port, message);
 
-    puts("\n");
+    log_event(NULL, "Mensaje recibido de %s desde la IP %s utilizando el puerto %s: %s \n", id, ip, port, message);
 
     return 0;
 }
@@ -161,8 +161,7 @@ void *listen_to_port(void *params)
         }
         else
         {
-            puts("listening\n");
-            printf("---------------------\nConexion recibida de  %s\n", inet_ntoa(sock_clt.sin_addr));
+            log_event(NULL, "Escuchando... Conexion recibida de  %s\n", inet_ntoa(sock_clt.sin_addr));
             struct functionParameters function_parameters;
             function_parameters.nsid_p = nsid;
             function_parameters.sock_clt = &sock_clt;
@@ -238,7 +237,7 @@ void *readImageFromSocket(void *params)
         exit(4);
     }
     int clt_port = ntohs(sock_clt->sin_port);
-    printf("Inicio de conexión para: %s:%d\n", dst, clt_port);
+    log_event(NULL, "Inicio de conexión para: %s:%d\n", dst, clt_port);
 
     bzero(buffer, BUFFERT);
 
@@ -247,13 +246,11 @@ void *readImageFromSocket(void *params)
     bzero(buffer, BUFFERT);
     n = recv(nsid, buffer, BUFFERT, 0);
 
-    // printf("Recived %ld bytes of data", n);
-    //puts("\n");
     while (n)
     {
         if (n == -1)
         {
-            perror("recv fail");
+            log_event(NULL, "%s", "Error in reciving data");
             exit(5);
         }
         memcpy(file_mem + count, buffer, BUFFERT);
@@ -269,10 +266,9 @@ void *readImageFromSocket(void *params)
         //  printf("Recived %ld bytes of data", n);
         //  puts("\n");
     }
-    printf("Total %ld bytes of data \n", count);
-    printf("wrote data %ld times\n", count / BUFFERT);
-    printf("El valor que entró es %s", headers);
-    puts("\n");
+    log_event(NULL, "Total %ld bytes of data \n", count);
+    log_event(NULL, "wrote data %ld times\n", count / BUFFERT);
+    log_event(NULL, "El valor que entró es %s", headers);
     pthread_mutex_lock(&lock);
     processImageInNode(count, headers, file_mem);
     pthread_mutex_unlock(&lock);
@@ -321,12 +317,10 @@ void processImageInNode(int count, void *headers, void *file_mem)
         {
             break;
         }
-        printf("Searching node... \n");
-        puts("\n");
+
         node_index = rand() % MAX_NODES;
     }
-    printf("nodo %d", node_index);
-    puts("\n");
+    log_event(NULL, "Se ha asignado el nodo %d a la imagen %s", nodes[node_index].id, images[images_head].name);
     int next_head = images_head + 1;
 
     if (next_head >= QUEUE_SIZE)
@@ -336,7 +330,7 @@ void processImageInNode(int count, void *headers, void *file_mem)
 
     if (next_head == images_tail)
     {
-        printf("La cola está llena imagen rechazada");
+        log_event("WARNING", "La cola está llena imagen rechazada");
         free(images[images_head].image_mem);
     }
     else

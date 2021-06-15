@@ -1,0 +1,18 @@
+Mon Jun 14 18:00:43 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Mon Jun 14 18:00:54 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:40608
+
+Mon Jun 14 18:00:54 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Mon Jun 14 18:00:59 2021
+ [INFO]: Mensaje recibido de 491864491864 desde la IP 127.0.0.1 utilizando el puerto 6491: join 
+
+Mon Jun 14 18:00:59 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:40608
+
+Mon Jun 14 18:00:59 2021
+ [INFO]: Mensaje recibido de 853279853279 desde la IP 127.0.0.1 utilizando el puerto 6491: join 
+
