@@ -1,60 +1,217 @@
-Tue Jun 15 02:25:10 2021
+Tue Jun 15 03:35:12 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Tue Jun 15 02:25:10 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:47928
+Tue Jun 15 03:35:12 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:33994
 
-Tue Jun 15 02:25:11 2021
+Tue Jun 15 03:35:12 2021
+ [INFO]: Mensaje recibido de 995547995547 desde la IP 127.0.0.1 utilizando el puerto 6940: join 
+
+Tue Jun 15 03:35:15 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Tue Jun 15 02:25:11 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:47936
+Tue Jun 15 03:35:15 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34000
 
-Tue Jun 15 02:25:12 2021
+Tue Jun 15 03:35:15 2021
+ [INFO]: Mensaje recibido de 631685631685 desde la IP 127.0.0.1 utilizando el puerto 6943: join 
+
+Tue Jun 15 03:35:33 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Tue Jun 15 02:25:12 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:47940
+Tue Jun 15 03:35:33 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34048
 
-Tue Jun 15 02:25:13 2021
+Tue Jun 15 03:35:33 2021
+ [INFO]: Mensaje recibido de 356064356064 desde la IP 127.0.0.1 utilizando el puerto 6944: join 
+
+Tue Jun 15 03:35:40 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Tue Jun 15 02:25:13 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:47942
+Tue Jun 15 03:35:40 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:35186
 
-Tue Jun 15 02:25:14 2021
+Tue Jun 15 03:35:40 2021
+ [INFO]: Se ha asignado el nodo 325439173 a la imagen 81008test.png
+Tue Jun 15 03:35:41 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Tue Jun 15 02:25:14 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:47950
+Tue Jun 15 03:35:41 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:35198
 
-Tue Jun 15 02:25:15 2021
+Tue Jun 15 03:35:41 2021
+ [INFO]: Se ha asignado el nodo -417929504 a la imagen 98316test.png
+Tue Jun 15 03:35:42 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Tue Jun 15 02:25:15 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:47962
+Tue Jun 15 03:35:42 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:35202
 
-Tue Jun 15 02:25:16 2021
+Tue Jun 15 03:35:42 2021
+ [INFO]: Se ha asignado el nodo 325439173 a la imagen 67159test.png
+Tue Jun 15 03:35:43 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Tue Jun 15 02:25:16 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:47968
+Tue Jun 15 03:35:43 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:35206
 
-Tue Jun 15 02:25:17 2021
+Tue Jun 15 03:35:43 2021
+ [INFO]: Se ha asignado el nodo -884417125 a la imagen 54625test.png
+Tue Jun 15 03:35:44 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Tue Jun 15 02:25:17 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:47970
+Tue Jun 15 03:35:44 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:35210
 
-Tue Jun 15 02:25:18 2021
+Tue Jun 15 03:35:44 2021
+ [INFO]: Se ha asignado el nodo -417929504 a la imagen 86377test.png
+Tue Jun 15 03:35:45 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Tue Jun 15 02:25:18 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:47972
+Tue Jun 15 03:35:45 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:35222
 
-Tue Jun 15 02:25:19 2021
+Tue Jun 15 03:35:45 2021
+ [INFO]: Se ha asignado el nodo -884417125 a la imagen 84079test.png
+Tue Jun 15 03:35:46 2021
  [INFO]: Escuchando... Conexion recibida de  127.0.0.1
 
-Tue Jun 15 02:25:19 2021
- [INFO]: Inicio de conexión para: 127.0.0.1:47974
+Tue Jun 15 03:35:46 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:35232
+
+Tue Jun 15 03:35:46 2021
+ [INFO]: Se ha asignado el nodo -417929504 a la imagen 11461test.png
+Tue Jun 15 03:35:47 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:47 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:35236
+
+Tue Jun 15 03:35:48 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:48 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:35238
+
+Tue Jun 15 03:35:48 2021
+ [INFO]: Se ha asignado el nodo 325439173 a la imagen 55875test.png
+Tue Jun 15 03:35:49 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:49 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:35242
+
+Tue Jun 15 03:35:51 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:51 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34136
+
+Tue Jun 15 03:35:51 2021
+ [INFO]: Se liberó un espacio en el nodo 325439173
+Tue Jun 15 03:35:51 2021
+ [INFO]: Mensaje recibido de 631685631685 desde la IP 127.0.0.1 utilizando el puerto 6943: free 
+
+Tue Jun 15 03:35:51 2021
+ [INFO]: Se ha asignado el nodo 325439173 a la imagen 63443test.png
+Tue Jun 15 03:35:52 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:52 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34140
+
+Tue Jun 15 03:35:52 2021
+ [INFO]: Se liberó un espacio en el nodo -417929504
+Tue Jun 15 03:35:52 2021
+ [INFO]: Mensaje recibido de 356064356064 desde la IP 127.0.0.1 utilizando el puerto 6944: free 
+
+Tue Jun 15 03:35:52 2021
+ [INFO]: Se ha asignado el nodo -417929504 a la imagen 48968test.png
+Tue Jun 15 03:35:53 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:53 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34144
+
+Tue Jun 15 03:35:53 2021
+ [INFO]: Se liberó un espacio en el nodo 325439173
+Tue Jun 15 03:35:53 2021
+ [INFO]: Mensaje recibido de 631685631685 desde la IP 127.0.0.1 utilizando el puerto 6943: free 
+
+Tue Jun 15 03:35:54 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:54 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34146
+
+Tue Jun 15 03:35:54 2021
+ [INFO]: Se liberó un espacio en el nodo -884417125
+Tue Jun 15 03:35:54 2021
+ [INFO]: Mensaje recibido de 995547995547 desde la IP 127.0.0.1 utilizando el puerto 6940: free 
+
+Tue Jun 15 03:35:55 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:55 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34160
+
+Tue Jun 15 03:35:55 2021
+ [INFO]: Se liberó un espacio en el nodo -417929504
+Tue Jun 15 03:35:55 2021
+ [INFO]: Mensaje recibido de 356064356064 desde la IP 127.0.0.1 utilizando el puerto 6944: free 
+
+Tue Jun 15 03:35:56 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:56 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34164
+
+Tue Jun 15 03:35:56 2021
+ [INFO]: Se liberó un espacio en el nodo -884417125
+Tue Jun 15 03:35:56 2021
+ [INFO]: Mensaje recibido de 995547995547 desde la IP 127.0.0.1 utilizando el puerto 6940: free 
+
+Tue Jun 15 03:35:57 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:57 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34166
+
+Tue Jun 15 03:35:57 2021
+ [INFO]: Se liberó un espacio en el nodo -417929504
+Tue Jun 15 03:35:57 2021
+ [INFO]: Mensaje recibido de 356064356064 desde la IP 127.0.0.1 utilizando el puerto 6944: free 
+
+Tue Jun 15 03:35:59 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:35:59 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34168
+
+Tue Jun 15 03:35:59 2021
+ [INFO]: Se liberó un espacio en el nodo 325439173
+Tue Jun 15 03:35:59 2021
+ [INFO]: Mensaje recibido de 631685631685 desde la IP 127.0.0.1 utilizando el puerto 6943: free 
+
+Tue Jun 15 03:36:02 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:36:02 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34190
+
+Tue Jun 15 03:36:02 2021
+ [INFO]: Se liberó un espacio en el nodo 325439173
+Tue Jun 15 03:36:02 2021
+ [INFO]: Mensaje recibido de 631685631685 desde la IP 127.0.0.1 utilizando el puerto 6943: free 
+
+Tue Jun 15 03:36:03 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 03:36:03 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:34192
+
+Tue Jun 15 03:36:03 2021
+ [INFO]: Se liberó un espacio en el nodo -417929504
+Tue Jun 15 03:36:03 2021
+ [INFO]: Mensaje recibido de 356064356064 desde la IP 127.0.0.1 utilizando el puerto 6944: free 
 

@@ -179,6 +179,7 @@ void *readImageFromSocket(void *params)
     void *file_mem = malloc(BUFFERT);
 
     bzero(buffer, BUFFERT);
+    bzero(headers, BUFFERT);
 
     if (inet_ntop(AF_INET, &sock_clt->sin_addr, dst, INET_ADDRSTRLEN) == NULL)
     {
@@ -249,11 +250,6 @@ void processImageInNode(int count, void *headers, void *file_mem)
         exit(6);
     }
 
-    strcpy(images[images_head].name, new_name);
-    images[images_head].key = atoi(key);
-    images[images_head].image_mem = file_mem;
-    images[images_head].size = m;
-
     int node_index = rand() % MAX_NODES;
 
     // esto es busy waiting hay que quitar esta mierda salu3
@@ -270,6 +266,12 @@ void processImageInNode(int count, void *headers, void *file_mem)
     pthread_create(&wait_thread, 0, &waiting, &nodes[node_index].id);
     sem_wait(&nodes[node_index].semaphore);
     pthread_cancel(wait_thread);
+
+    strcpy(images[images_head].name, new_name);
+    images[images_head].key = atoi(key);
+    images[images_head].image_mem = file_mem;
+    images[images_head].size = count;
+    struct image *new_image2 = &images[images_head];
 
     log_event(NULL, "Se ha asignado el nodo %d a la imagen %s", nodes[node_index].id, images[images_head].name);
     int next_head = images_head + 1;
@@ -291,6 +293,7 @@ void processImageInNode(int count, void *headers, void *file_mem)
         /// Hacer los calculos del tail pls
 
         free(images[images_head].image_mem);
+
         images_head = next_head;
     }
 }

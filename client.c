@@ -25,7 +25,6 @@ int sendToNode(struct node *new_node, struct image *new_image)
 	off_t count = 0, m;
 
 	int l = sizeof(struct sockaddr_in);
-	struct stat buffer;
 	pthread_t thread_id = 0;
 
 	sfd = create_client_socket(new_node->port, new_node->ipaddr);
@@ -41,32 +40,24 @@ int sendToNode(struct node *new_node, struct image *new_image)
 	sprintf(key, "%d", new_image->key);
 	strcat(key, ";");
 	strcat(key, new_image->name);
-	m = sendto(sfd, key, BUFFERT, 0, (struct sockaddr *)&sock_serv, l);
-	int remainingBytes = new_image->size;
-	int bytesToRead = BUFFERT;
+	m = send(sfd, key, BUFFERT, 0);
 
 	while (1)
 	{
-		bytesToRead = BUFFERT;
-		if (remainingBytes < bytesToRead)
+		if (count > new_image->size)
 		{
-			bytesToRead = remainingBytes;
-			memcpy(buf, new_image->image_mem + count, bytesToRead);
-			m = sendto(sfd, buf, bytesToRead, 0, (struct sockaddr *)&sock_serv, l);
-
 			break;
 		}
-		memcpy(buf, new_image->image_mem + count, bytesToRead);
-		m = sendto(sfd, buf, bytesToRead, 0, (struct sockaddr *)&sock_serv, l);
+		memcpy(buf, new_image->image_mem + count, BUFFERT);
+		m = send(sfd, buf, BUFFERT, 0);
 		count = count + m;
-		remainingBytes = remainingBytes - m;
 		bzero(buf, BUFFERT);
 	}
 
 	// lectura acaba de devolver 0: final del archivo
 
 	// para desbloquear el serv
-	m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
+	//m = send(sfd, buf, 0, 0);
 	gettimeofday(&stop, NULL);
 	duration(&start, &stop, &delta);
 	/*
@@ -146,7 +137,7 @@ void *sendOP(void *v_arguments)
 	delta = args->delta;
 	off_t sz = args->sz;
 
-	m = sendto(sfd, key, n, 0, (struct sockaddr *)&sock_serv, l);
+	m = send(sfd, key, n, 0);
 
 	puts("\n");
 	while (n)
@@ -156,7 +147,7 @@ void *sendOP(void *v_arguments)
 			perror("read fails");
 			exit(-1);
 		}
-		m = sendto(sfd, buf, n, 0, (struct sockaddr *)&sock_serv, l);
+		m = send(sfd, buf, n, 0);
 		if (m == -1)
 		{
 			perror("send error");
@@ -169,7 +160,7 @@ void *sendOP(void *v_arguments)
 	// lectura acaba de devolver 0: final del archivo
 
 	// para desbloquear el serv
-	m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
+	//m = send(sfd, buf, 0, 0);
 	gettimeofday(&stop, NULL);
 	duration(&start, &stop, &delta);
 }
