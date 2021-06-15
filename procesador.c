@@ -30,7 +30,7 @@
 int duration(struct timeval *start, struct timeval *stop, struct timeval *delta);
 int create_server_socket(int port);
 void *socketHandler(void *lp);
-char ipserver[20],ipself[20],port[20],id[20];
+char ipserver[20], ipself[20], port[20], id[20];
 char key[BUFFERT];
 
 struct sockaddr_in sock_serv, sock_clt;
@@ -41,9 +41,9 @@ int main(int argc, char **argv)
     unsigned int length = sizeof(struct sockaddr_in);
     unsigned int nsid;
     time_t t;
-    srand((unsigned)time(&t));
+    srand(time(0));
     pthread_t thread_id = 0;
-    
+
     if (argc != 4)
     {
         perror("uso ./procesador.out <num_port> <ip_server> <ip_self>\n");
@@ -51,11 +51,15 @@ int main(int argc, char **argv)
     }
 
     sfd = create_server_socket(atoi(argv[1]));
-    strcpy(ipserver,argv[2]);
-    strcpy(port, argv[1]); 
-    strcpy(ipself,argv[3]);
-    sprintf(id, "%d", rand() % 1000000);
-    comunicate(ipserver,port,ipself,"join",id);
+    strcpy(ipserver, argv[2]);
+    strcpy(port, argv[1]);
+    strcpy(ipself, argv[3]);
+    int random_Id = rand() % 1000000;
+    printf("Random ID %d", random_Id);
+    puts("\n");
+
+    sprintf(id, "%d", random_Id);
+    comunicate(ipserver, port, ipself, "join", id);
     // Función que llega a la función de conexión del cliente
     while (1)
     {
@@ -142,13 +146,19 @@ void *socketHandler(void *lp)
     printf("Inicio de conexión para: %s:%d\n", dst, clt_port);
 
     bzero(buffer, BUFFERT);
+    bzero(headers, BUFFERT);
+
     void *file_mem = malloc(BUFFERT);
 
     n = recv(nsid, headers, BUFFERT, 0);
 
     bzero(buffer, BUFFERT);
     n = recv(nsid, buffer, BUFFERT, 0);
-    
+    /*     if (n == 0)
+    {
+        return -1;
+    }
+ */
     printf("Recived %ld bytes of data", n);
     puts("\n");
     while (n)
@@ -195,36 +205,40 @@ void *socketHandler(void *lp)
     return 0;
 }
 
-int filtrxor(char* name,int xor) {
-    
+int filtrxor(char *name, int xor)
+{
+
     char new_name[128] = "xor_";
     strcat(new_name, name);
     puts(name);
-     int width, height, channels;
-     unsigned char *img = stbi_load(name, &width, &height, &channels, 0);
-     if(img == NULL) {
-         printf("Error in loading the image\n");
-         exit(1);
-     }
-     printf("Loaded image with a width of %dpx, a height of %dpx and %d channels\n", width, height, channels);
+    int width, height, channels;
+    unsigned char *img = stbi_load(name, &width, &height, &channels, 0);
+    if (img == NULL)
+    {
+        printf("Error in loading the image\n");
+        exit(1);
+    }
+    printf("Loaded image with a width of %dpx, a height of %dpx and %d channels\n", width, height, channels);
     size_t img_size = width * height * channels;
     unsigned char *sepia_img = malloc(img_size);
-     if(sepia_img == NULL) {
-         printf("Unable to allocate memory for the sepia image.\n");
-         exit(1);
-     }
- 
-     for(unsigned char *p = img, *pg = sepia_img; p != img + img_size; p += channels, pg += channels) {
-         *pg       = (uint8_t)fmin(*p ^ xor , 255.0);         // red
-         *(pg + 1) = (uint8_t)fmin(*p ^ xor , 255.0);         // green
-         *(pg + 2) = (uint8_t)fmin(*p ^ xor , 255.0);         // blue        
-         if(channels == 4) {
-             *(pg + 3) = *(p + 3);
-         }
-     }
-     sleep(4);
-        
-     stbi_write_jpg(new_name, width, height, channels, sepia_img, 100);  
-     comunicate(ipserver,port,ipself,"free",id);
+    if (sepia_img == NULL)
+    {
+        printf("Unable to allocate memory for the sepia image.\n");
+        exit(1);
+    }
 
+    for (unsigned char *p = img, *pg = sepia_img; p != img + img_size; p += channels, pg += channels)
+    {
+        *pg = (uint8_t)fmin(*p ^ xor, 255.0);       // red
+        *(pg + 1) = (uint8_t)fmin(*p ^ xor, 255.0); // green
+        *(pg + 2) = (uint8_t)fmin(*p ^ xor, 255.0); // blue
+        if (channels == 4)
+        {
+            *(pg + 3) = *(p + 3);
+        }
+    }
+    sleep(10);
+
+    stbi_write_jpg(new_name, width, height, channels, sepia_img, 100);
+    comunicate(ipserver, port, ipself, "free", id);
 }

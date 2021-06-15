@@ -18,7 +18,7 @@ int create_client_socket(int port, char *ipaddr);
 
 struct sockaddr_in sock_serv;
 
-int comunicate(char* ip,char* portself,char* ipself,char* texto, char* id)
+int comunicate(char *ip, char *portself, char *ipself, char *texto, char *id)
 {
 	time_t t;
 	srand((unsigned)time(&t));
@@ -29,7 +29,7 @@ int comunicate(char* ip,char* portself,char* ipself,char* texto, char* id)
 	int l = sizeof(struct sockaddr_in);
 
 	sfd = create_client_socket(2223, ip);
-	
+
 	if (connect(sfd, (struct sockaddr *)&sock_serv, l) == -1)
 	{
 		perror("conexion error\n");
@@ -37,23 +37,22 @@ int comunicate(char* ip,char* portself,char* ipself,char* texto, char* id)
 	}
 	puts("hola");
 	char key[BUFFERT];
-	sprintf(key, id);
-	strcat(key,id);
+	strcat(key, id);
 	strcat(key, ";");
 	strcat(key, ipself);
 	strcat(key, ";");
 	puts(portself);
-	strcat(key,portself);
+	strcat(key, portself);
 	strcat(key, ";");
 	strcat(key, texto);
-	m = sendto(sfd, key, BUFFERT, 0, (struct sockaddr *)&sock_serv, l);
+	m = send(sfd, key, BUFFERT, 0);
 
 	puts("\n");
 	// lectura acaba de devolver 0: final del archivo
 
 	// para desbloquear el serv
-	bzero(key,BUFFERT);
-	m = sendto(sfd, key, 0, 0, (struct sockaddr *)&sock_serv, l);
+	bzero(key, BUFFERT);
+	//m = send(sfd, key, 0, 0);
 	gettimeofday(&stop, NULL);
 	duration(&start, &stop, &delta);
 
