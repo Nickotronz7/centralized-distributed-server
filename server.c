@@ -266,36 +266,40 @@ void processImageInNode(int count, void *headers, void *file_mem)
     pthread_create(&wait_thread, 0, &waiting, &nodes[node_index].id);
     sem_wait(&nodes[node_index].semaphore);
     pthread_cancel(wait_thread);
+    int image_index = images_head;
 
-    strcpy(images[images_head].name, new_name);
-    images[images_head].key = atoi(key);
-    images[images_head].image_mem = file_mem;
-    images[images_head].size = count;
-    struct image *new_image2 = &images[images_head];
+    strcpy(images[image_index].name, new_name);
+    images[image_index].key = atoi(key);
+    images[image_index].image_mem = file_mem;
+    images[image_index].size = count;
+    struct image *new_image2 = &images[image_index];
 
-    log_event(NULL, "Se ha asignado el nodo %d a la imagen %s", nodes[node_index].id, images[images_head].name);
+    log_event(NULL, "Se ha asignado el nodo %d a la imagen %s", nodes[node_index].id, images[image_index].name);
+
+    if (image_index == images_tail)
+    {
+        log_event("WARNING", "La cola está llena imagen rechazada");
+        // free(images[images_head].image_mem);
+    }
+
+    // else
+    //  {
+    struct image *new_image = &images[images_head];
+    sendToNode(&nodes[node_index], &images[images_head]);
+    free(images[images_head].image_mem);
+    // }
+    increaseHead();
+}
+void increaseHead()
+{
+    pthread_mutex_lock(&head_mutex);
     int next_head = images_head + 1;
 
     if (next_head >= QUEUE_SIZE)
     {
         next_head = 0;
     }
-
-    if (next_head == images_tail)
-    {
-        log_event("WARNING", "La cola está llena imagen rechazada");
-        free(images[images_head].image_mem);
-    }
-    else
-    {
-        struct image *new_image = &images[images_head];
-        sendToNode(&nodes[node_index], &images[images_head]);
-        /// Hacer los calculos del tail pls
-
-        free(images[images_head].image_mem);
-
-        images_head = next_head;
-    }
+    pthread_mutex_unlock(&head_mutex);
 }
 
 void *waiting(void *node_index)

@@ -36,6 +36,8 @@ int duration(struct timeval *start, struct timeval *stop, struct timeval *delta)
 int create_client_socket(int port, char *ipaddr);
 void *sendOP(void *v_arguments);
 void *waiting(void *node_index);
+void increaseHead();
+
 struct sockaddr_in sock_serv;
 ////////////////////////////////////////////////////////////////
 ///////////////////////STRUCTS/////////////////////////////////
@@ -86,3 +88,4 @@ struct node nodes[MAX_NODES];
 pthread_mutex_t lock;
 int images_head;
 int images_tail;
+pthread_mutex_t head_mutex;

@@ -9,7 +9,8 @@
         "complex": "c",
         "stdio.h": "c",
         "logger.h": "c",
-        "system_error": "c"
+        "system_error": "c",
+        "random": "c"
     },
     "editor.codeActionsOnSave": {
         "source.organizeImports": true
