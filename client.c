@@ -37,6 +37,7 @@ int comunicate(char *ip, char *portself, char *ipself, char *texto, char *id)
 	}
 	puts("hola");
 	char key[BUFFERT];
+	bzero(&key, BUFFERT);
 	strcat(key, id);
 	strcat(key, ";");
 	strcat(key, ipself);
