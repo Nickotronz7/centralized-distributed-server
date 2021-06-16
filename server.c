@@ -267,6 +267,7 @@ void processImageInNode(int count, void *headers, void *file_mem)
     sem_wait(&nodes[node_index].semaphore);
     pthread_cancel(wait_thread);
     int image_index = images_head;
+    increaseHead();
 
     strcpy(images[image_index].name, new_name);
     images[image_index].key = atoi(key);
@@ -276,19 +277,8 @@ void processImageInNode(int count, void *headers, void *file_mem)
 
     log_event(NULL, "Se ha asignado el nodo %d a la imagen %s", nodes[node_index].id, images[image_index].name);
 
-    if (image_index == images_tail)
-    {
-        log_event("WARNING", "La cola está llena imagen rechazada");
-        // free(images[images_head].image_mem);
-    }
-
-    // else
-    //  {
-    struct image *new_image = &images[images_head];
-    sendToNode(&nodes[node_index], &images[images_head]);
-    free(images[images_head].image_mem);
-    // }
-    increaseHead();
+    sendToNode(&nodes[node_index], &images[image_index]);
+    free(images[image_index].image_mem);
 }
 void increaseHead()
 {
@@ -297,7 +287,13 @@ void increaseHead()
 
     if (next_head >= QUEUE_SIZE)
     {
+        log_event("WARNING", "La cola está llena imagen rechazada");
+
         next_head = 0;
+    }
+    else
+    {
+        images_head = next_head;
     }
     pthread_mutex_unlock(&head_mutex);
 }

@@ -1,9 +1,303 @@
-Tue Jun 15 18:45:59 2021
+Tue Jun 15 19:35:40 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 19:35:40 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:36420
+
+Tue Jun 15 19:35:40 2021
+ [INFO]: Mensaje recibido de 125926 desde la IP 127.0.0.1 utilizando el puerto 6942: join 
+
+Tue Jun 15 19:35:46 2021
  [INFO]: Escuchando... Conexion recibida de  192.168.195.219
 
-Tue Jun 15 18:45:59 2021
- [INFO]: Inicio de conexión para: 192.168.195.219:53487
+Tue Jun 15 19:35:46 2021
+ [INFO]: Inicio de conexión para: 192.168.195.219:54389
 
-Tue Jun 15 18:45:59 2021
- [INFO]: Mensaje recibido de ���461968 desde la IP 192.168.195.219 utilizando el puerto 6940: join 
+Tue Jun 15 19:35:46 2021
+ [INFO]: Mensaje recibido de 402292 desde la IP 192.168.195.219 utilizando el puerto 6941: join 
+
+Tue Jun 15 19:36:04 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:04 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56216
+
+Tue Jun 15 19:36:04 2021
+ [INFO]: Se ha asignado el nodo 125926 a la imagen 84866pika.png
+Tue Jun 15 19:36:05 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:05 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56218
+
+Tue Jun 15 19:36:06 2021
+ [INFO]: Se ha asignado el nodo 402292 a la imagen 90348pika.png
+Tue Jun 15 19:36:06 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:06 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56220
+
+Tue Jun 15 19:36:07 2021
+ [INFO]: Se ha asignado el nodo 402292 a la imagen 97638pika.png
+Tue Jun 15 19:36:08 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:08 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56222
+
+Tue Jun 15 19:36:08 2021
+ [INFO]: Se ha asignado el nodo 125926 a la imagen 14006pika.png
+Tue Jun 15 19:36:09 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:09 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56224
+
+Tue Jun 15 19:36:10 2021
+ [INFO]: Se ha asignado el nodo 125926 a la imagen 33501pika.png
+Tue Jun 15 19:36:10 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:10 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56226
+
+Tue Jun 15 19:36:11 2021
+ [INFO]: Se ha asignado el nodo 402292 a la imagen 38407pika.png
+Tue Jun 15 19:36:11 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:11 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56228
+
+Tue Jun 15 19:36:13 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:13 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56230
+
+Tue Jun 15 19:36:14 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:14 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56232
+
+Tue Jun 15 19:36:14 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 19:36:14 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:36560
+
+Tue Jun 15 19:36:14 2021
+ [INFO]: Se liberó un espacio en el nodo 125926
+Tue Jun 15 19:36:14 2021
+ [INFO]: Mensaje recibido de 125926 desde la IP 127.0.0.1 utilizando el puerto 6942: free 
+
+Tue Jun 15 19:36:14 2021
+ [INFO]: Se ha asignado el nodo 125926 a la imagen 34339pika.png
+Tue Jun 15 19:36:15 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:15 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56234
+
+Tue Jun 15 19:36:16 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:16 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56136
+
+Tue Jun 15 19:36:17 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:17 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56138
+
+Tue Jun 15 19:36:18 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 19:36:18 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:36576
+
+Tue Jun 15 19:36:18 2021
+ [INFO]: Se liberó un espacio en el nodo 125926
+Tue Jun 15 19:36:18 2021
+ [INFO]: Se ha asignado el nodo 125926 a la imagen 98496pika.png
+Tue Jun 15 19:36:18 2021
+ [INFO]: Mensaje recibido de 125926 desde la IP 127.0.0.1 utilizando el puerto 6942: free 
+
+Tue Jun 15 19:36:19 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:19 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56140
+
+Tue Jun 15 19:36:20 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 19:36:20 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:36582
+
+Tue Jun 15 19:36:20 2021
+ [INFO]: Se liberó un espacio en el nodo 125926
+Tue Jun 15 19:36:20 2021
+ [INFO]: Mensaje recibido de 125926 desde la IP 127.0.0.1 utilizando el puerto 6942: free 
+
+Tue Jun 15 19:36:20 2021
+ [INFO]: Se ha asignado el nodo 125926 a la imagen 51151pika.png
+Tue Jun 15 19:36:20 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:20 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56142
+
+Tue Jun 15 19:36:21 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.85
+
+Tue Jun 15 19:36:21 2021
+ [INFO]: Inicio de conexión para: 192.168.195.85:56144
+
+Tue Jun 15 19:36:21 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.219
+
+Tue Jun 15 19:36:21 2021
+ [INFO]: Inicio de conexión para: 192.168.195.219:54403
+
+Tue Jun 15 19:36:21 2021
+ [INFO]: Se liberó un espacio en el nodo 402292
+Tue Jun 15 19:36:21 2021
+ [INFO]: Mensaje recibido de 402292 desde la IP 192.168.195.219 utilizando el puerto 6941: free 
+
+Tue Jun 15 19:36:21 2021
+ [INFO]: Se ha asignado el nodo 402292 a la imagen 92756pika.png
+Tue Jun 15 19:36:22 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.219
+
+Tue Jun 15 19:36:22 2021
+ [INFO]: Inicio de conexión para: 192.168.195.219:54404
+
+Tue Jun 15 19:36:22 2021
+ [INFO]: Se liberó un espacio en el nodo 402292
+Tue Jun 15 19:36:22 2021
+ [INFO]: Mensaje recibido de 402292 desde la IP 192.168.195.219 utilizando el puerto 6941: free 
+
+Tue Jun 15 19:36:22 2021
+ [INFO]: Se ha asignado el nodo 402292 a la imagen 51443pika.png
+Tue Jun 15 19:36:25 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 19:36:25 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:36606
+
+Tue Jun 15 19:36:25 2021
+ [INFO]: Se liberó un espacio en el nodo 125926
+Tue Jun 15 19:36:25 2021
+ [INFO]: Mensaje recibido de 125926 desde la IP 127.0.0.1 utilizando el puerto 6942: free 
+
+Tue Jun 15 19:36:25 2021
+ [INFO]: Se ha asignado el nodo 125926 a la imagen 26728pika.png
+Tue Jun 15 19:36:28 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 19:36:28 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:36622
+
+Tue Jun 15 19:36:28 2021
+ [INFO]: Se liberó un espacio en el nodo 125926
+Tue Jun 15 19:36:28 2021
+ [INFO]: Mensaje recibido de 125926 desde la IP 127.0.0.1 utilizando el puerto 6942: free 
+
+Tue Jun 15 19:36:28 2021
+ [INFO]: Se ha asignado el nodo 125926 a la imagen 76538pika.png
+Tue Jun 15 19:36:30 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 19:36:30 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:36626
+
+Tue Jun 15 19:36:30 2021
+ [INFO]: Se liberó un espacio en el nodo 125926
+Tue Jun 15 19:36:30 2021
+ [INFO]: Mensaje recibido de 125926 desde la IP 127.0.0.1 utilizando el puerto 6942: free 
+
+Tue Jun 15 19:36:35 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 19:36:35 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:36640
+
+Tue Jun 15 19:36:35 2021
+ [INFO]: Se liberó un espacio en el nodo 125926
+Tue Jun 15 19:36:35 2021
+ [INFO]: Mensaje recibido de 125926 desde la IP 127.0.0.1 utilizando el puerto 6942: free 
+
+Tue Jun 15 19:36:36 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.219
+
+Tue Jun 15 19:36:36 2021
+ [INFO]: Inicio de conexión para: 192.168.195.219:54408
+
+Tue Jun 15 19:36:36 2021
+ [INFO]: Se liberó un espacio en el nodo 402292
+Tue Jun 15 19:36:36 2021
+ [INFO]: Mensaje recibido de 402292 desde la IP 192.168.195.219 utilizando el puerto 6941: free 
+
+Tue Jun 15 19:36:36 2021
+ [INFO]: Se ha asignado el nodo 402292 a la imagen 96134pika.png
+Tue Jun 15 19:36:38 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.219
+
+Tue Jun 15 19:36:38 2021
+ [INFO]: Inicio de conexión para: 192.168.195.219:54410
+
+Tue Jun 15 19:36:38 2021
+ [INFO]: Se liberó un espacio en el nodo 402292
+Tue Jun 15 19:36:38 2021
+ [INFO]: Mensaje recibido de 402292 desde la IP 192.168.195.219 utilizando el puerto 6941: free 
+
+Tue Jun 15 19:36:38 2021
+ [INFO]: Se ha asignado el nodo 402292 a la imagen 22210pika.png
+Tue Jun 15 19:36:39 2021
+ [INFO]: Escuchando... Conexion recibida de  127.0.0.1
+
+Tue Jun 15 19:36:39 2021
+ [INFO]: Inicio de conexión para: 127.0.0.1:36660
+
+Tue Jun 15 19:36:39 2021
+ [INFO]: Se liberó un espacio en el nodo 125926
+Tue Jun 15 19:36:39 2021
+ [INFO]: Mensaje recibido de 125926 desde la IP 127.0.0.1 utilizando el puerto 6942: free 
+
+Tue Jun 15 19:36:46 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.219
+
+Tue Jun 15 19:36:46 2021
+ [INFO]: Inicio de conexión para: 192.168.195.219:54411
+
+Tue Jun 15 19:36:46 2021
+ [INFO]: Se liberó un espacio en el nodo 402292
+Tue Jun 15 19:36:46 2021
+ [INFO]: Mensaje recibido de 402292 desde la IP 192.168.195.219 utilizando el puerto 6941: free 
+
+Tue Jun 15 19:36:54 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.219
+
+Tue Jun 15 19:36:54 2021
+ [INFO]: Inicio de conexión para: 192.168.195.219:54414
+
+Tue Jun 15 19:36:54 2021
+ [INFO]: Se liberó un espacio en el nodo 402292
+Tue Jun 15 19:36:54 2021
+ [INFO]: Mensaje recibido de 402292 desde la IP 192.168.195.219 utilizando el puerto 6941: free 
+
+Tue Jun 15 19:36:54 2021
+ [INFO]: Escuchando... Conexion recibida de  192.168.195.219
+
+Tue Jun 15 19:36:54 2021
+ [INFO]: Inicio de conexión para: 192.168.195.219:54415
+
+Tue Jun 15 19:36:54 2021
+ [INFO]: Se liberó un espacio en el nodo 402292
+Tue Jun 15 19:36:54 2021
+ [INFO]: Mensaje recibido de 402292 desde la IP 192.168.195.219 utilizando el puerto 6941: free 
 
