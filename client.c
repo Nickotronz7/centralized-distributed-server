@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 		strcat(key, argv[3]);
 		printf("La llave es %s", key);
 
-		m = sendto(sfd, key, n, 0, (struct sockaddr *)&sock_serv, l);
+		m = send(sfd, key, n, 0);
 
 		puts("\n");
 		while (n)
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 				perror("read fails");
 				return EXIT_FAILURE;
 			}
-			m = sendto(sfd, buf, n, 0, (struct sockaddr *)&sock_serv, l);
+			m = send(sfd, buf, n, 0);
 			if (m == -1)
 			{
 				perror("send error");
@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 		// lectura acaba de devolver 0: final del archivo
 
 		// para desbloquear el serv
-		m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
+		//m = send(sfd, buf, 0, 0);
 		gettimeofday(&stop, NULL);
 		duration(&start, &stop, &delta);
 
@@ -205,7 +205,7 @@ void *sendOP(void *v_arguments)
 	delta = args->delta;
 	off_t sz = args->sz;
 
-	m = sendto(sfd, key, n, 0, (struct sockaddr *)&sock_serv, l);
+	m = send(sfd, key, n, 0);
 
 	puts("\n");
 	while (n)
@@ -215,7 +215,7 @@ void *sendOP(void *v_arguments)
 			perror("read fails");
 			exit(-1);
 		}
-		m = sendto(sfd, buf, n, 0, (struct sockaddr *)&sock_serv, l);
+		m = send(sfd, buf, n, 0);
 		if (m == -1)
 		{
 			perror("send error");
@@ -228,7 +228,7 @@ void *sendOP(void *v_arguments)
 	// lectura acaba de devolver 0: final del archivo
 
 	// para desbloquear el serv
-	m = sendto(sfd, buf, 0, 0, (struct sockaddr *)&sock_serv, l);
+	//m = send(sfd, buf, 0, 0);
 	gettimeofday(&stop, NULL);
 	duration(&start, &stop, &delta);
 
